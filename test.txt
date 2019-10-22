@@ -1,8 +1,7 @@
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lobortis vulputate felis, ut commodo orci.1
-Sed et lobortis neque, vitae interdum dolor.2
-Etiam consequat ut risus a malesuada. Sed dignissim ligula erat, quis suscipit justo malesuada et.3
-Interdum et malesuada fames ac ante ipsum primis in faucibus.
-Aenean accumsan pellentesque erat sit amet dapibus.
-Pellentesque vitae finibus nibh, et fringilla mauris.
-Mauris laoreet dictum lectus, sed interdum arcu egestas.
-Ut at felis velit.
+- Bonjour, comment ca va ?
+- Salut, bien et toi?
+- Tranquille
+- Et ça marche du coup ?
+- Ça à l'air
+- Pas mal
+- Ouai

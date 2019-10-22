@@ -12,6 +12,10 @@ all:		$(NAME)
 $(NAME): 	
 			$(CC) $(CFLAGS) $(SRCS) $(INCLUDES)
 
+launch :	re
+			clear
+			./a.out
+
 clean:		
 			${RM} $(OBJS) $(OBJSBNS)
 
