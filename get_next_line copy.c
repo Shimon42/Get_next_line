@@ -6,7 +6,7 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/21 20:22:38 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/22 18:28:40 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/22 17:05:41 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -130,56 +130,68 @@ int get_next_line(int fd, char **line)
 	printf("LEFT BEGIN: \033[0;33m%s\033[0m\n", left);
 	if ((buff = malloc(BUFFER_SIZE * sizeof(char))) != NULL)
     {
-        printf("-- Malloc OK\n");
-		if (asleft) // if left
-        {
-            printf("-- AS LEFT\n");
-            if ((check = has_eol(left)) >= 0) // if line has \n 
-            {
-                ft_realloc(*line, 0, ft_strlen(left) - check);
-                ft_strlcpy(*line, left, ft_strlen(left) - check); //line = left - check
-                ptr = left + ft_strlen(left) - check; // get start of next left
-                ft_strlcpy(left, ptr, check); //store left
-                return (1);
-            } else {
-                ft_strlcpy(*line, left, ft_strlen(left)); // store left
-                left = "";
-                asleft = 0;
-            }
-        }
-        while (check < 0) // Read file
-        {
-            read(fd, buff, BUFFER_SIZE);
-            printf("-- READ OK\n");
-            if ((check = has_eol(buff)) >= 0) // if \n
-            {
-                printf("-- FOUND EOL\n");
-                ft_realloc(*line, 0, ft_strlen(*line) + ft_strlen(buff) - check);
-                printf("-- REALLOC OK\n");
-                ptr = *line + ft_strlen(*line); //get start
-                printf("-- PTR OK - %s\n", ptr);
-                printf("-- PTR AT - %lu\n", ft_strlen(buff) - check);
-                ft_strlcpy(ptr, buff, check); //line = left - check
-                printf("-- LINE ASSIGN OK\n");
-
-                printf ("\033[0;36m-- CUR LINE: %s\033[0m\n", *line);
-                ptr = buff + ft_strlen(buff) - check; //get start
-                printf("-- PTR LEFT OK - %s\n", ptr);
-                printf("-- ALLOC LEFT - %lu\n", ft_strlen(buff) - check + 1);
-
-                ft_realloc(left, 0, ft_strlen(buff) - check + 1);
-                ft_strlcpy(left, ptr, ft_strlen(buff) - check); //store left
-                printf("-- STORE LEFT OK - %s\n", left);
-                left = "";
-                asleft = 1;
-
-                return (1);
-            } else {
-                ft_realloc(*line, 0, ft_strlen(*line) + BUFFER_SIZE);
-                *line = ft_strjoin(*line, buff);
-                printf ("\033[0;36m-- CUR LINE: %s\033[0m\n", *line);
-            }
-        }
+		while (check < 0)
+		{
+			if (asleft)
+			{
+				printf("\nAS LEFT ");
+				if ((check = has_eol(left)) > 0)
+				{
+					*line =  ft_strdup(&left[check]);
+					printf("----- LINE FROM LEFT: %s\n", *line);
+					asleft = 0;
+					left = "";
+				} else if (read(fd, buff, BUFFER_SIZE))
+				{
+					printf("------- Line left not ended\n");
+					if ((check = has_eol(buff)) < 0) // NOT END - OK
+					{
+						ft_realloc(*line, BUFFER_SIZE, 0); // REALLOC + buff size
+						*line = ft_strjoin(*line, buff); // line = line + curbuff
+						printf("line not end: %s\n", *line);
+					}
+					else // END FROM LEFT
+					{
+                        printf("END FROM LEFT --\n");
+                        ft_realloc(*line, 0, ft_strlen(*left) + check);
+                        ptr = *line + (ft_strlen(*line));
+                        printf("PTR: %s\n", ptr);
+                        ft_strlcpy(ptr, buff, check); // line = line + curbuff
+						printf("\n--\033[1;31mLineBUFF: %s\n\n", buff);
+						printf("--LineFL: %s\n\n", *line);
+						printf("--LeftFL: %s\n\n\033[0m", left);
+                        *line = ft_strjoin(left, buff);
+                        if (check >= 0 && check <= BUFFER_SIZE)
+						    asleft = 1;
+                        else
+                        {
+                            asleft = 0;
+                            left = "";
+                        }
+                        return (1);
+					}
+				}
+			}
+			else if (read(fd, buff, BUFFER_SIZE))
+			{
+				if ((check = has_eol(buff)) < 0)
+				{
+					ft_realloc(*line, BUFFER_SIZE, 0);
+					*line = ft_strjoin(*line, buff);
+					//printf("line not end: %s\n", *line);
+				} else
+				{
+					ft_realloc(*line, 0, ft_strlen(*line) + check);
+					ft_strlcpy(buff, buff, check);
+					left = ft_strdup(&buff[check]);
+					*line = ft_strjoin(*line, buff);
+					printf("line:%s\n", *line);
+					printf("left:%s\n", left);
+					asleft = 1;
+					return (1);
+				}
+			}
+		}
     }
 	return (1);
 }

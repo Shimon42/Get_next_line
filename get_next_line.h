@@ -6,7 +6,7 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/21 20:52:46 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/21 22:13:51 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/22 14:15:44 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -16,6 +16,7 @@
 typedef struct	s_gnl
 {
 	char	*line_buff;
+	char	*left;
 	int		line_len;
 	int		nbr_read;
 }				t_gnl;
