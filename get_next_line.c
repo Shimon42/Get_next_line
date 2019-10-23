@@ -6,7 +6,7 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/21 20:22:38 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/22 23:06:38 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/23 22:10:06 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -140,13 +140,22 @@ int get_next_line(int fd, char **line)
             printf("-- AS LEFT\n");
             if ((check = has_eol(left)) >= 0) // if line has \n 
             {
+				printf("-- AS RETURN IN LEFT\n");
                 ft_realloc(*line, 0, ft_strlen(left) - check);
-                ft_strlcpy(*line, left, ft_strlen(left) - check); //line = left - check
-                ptr = left + ft_strlen(left) - check; // get start of next left
-                ft_strlcpy(left, ptr, check); //store left
+                ft_strlcpy(*line, left, check); //line = left - check
+                ptr = left + check; // get start of next left
+                printf ("\033[0;36m-- CUR LINE: %s\033[0;35m[end]\033[0m\n", *line);
+                printf("-- PTR LEFT OK - %s\n", ptr);
+				printf("-- ALLOC LEFT - %d\n", BUFFER_SIZE - check);
+				//ft_realloc(left, 0, ft_strlen(buff) - check + 1);
+				left = ptr;
+				ft_realloc(left, 0, ft_strlen(left));
+				left[ft_strlen(left)] = '\0';
+				printf("\033[0;31mLEFT END: \033[0;33m%s\033[0;35m[end]\033[0m\n", left);
                 return (1);
             } else {
-                ft_strlcpy(*line, left, ft_strlen(left)); // store left
+				printf("-- NO RETURN IN LEFT\n");
+                ft_strlcpy(*line, left, ft_strlen(left) + 1); // store left
                 left = "";
                 asleft = 0;
             }
@@ -154,26 +163,26 @@ int get_next_line(int fd, char **line)
         while (check < 0) // Read file
         {
             read(fd, buff, BUFFER_SIZE);
-            printf("-- READ OK\n");
+            printf("-- READ OK -> BUFF:%s\n", buff);
             if ((check = has_eol(buff)) >= 0) // if \n
             {
                 printf("-- FOUND EOL -- %d\n", check);
-                ft_realloc(*line, 0, ft_strlen(*line) + ft_strlen(buff) - check);
+                ft_realloc(*line, 0, ft_strlen(*line) + ft_strlen(buff) - check); // alloc size of left + buff length - check 
                 printf("-- REALLOC OK\n");
                 ptr = *line + ft_strlen(*line); //get start
                 printf("-- PTR OK - %s\n", ptr);
                 printf("-- PTR AT - %lu\n", ft_strlen(buff) - check);
                 ft_strlcpy(ptr, buff, check); //line = left - check
                 printf("-- LINE ASSIGN OK\n");
-
+				*(ptr + check - 1) = '\0';
                 printf ("\033[0;36m-- CUR LINE: %s\033[0;35m[end]\033[0m\n", *line);
-                ptr = buff + check; //get start
+                ptr = buff + check; //get start, pas de + 1 car le "plus 1" est le \n 
                 printf("-- PTR LEFT OK - %s\n", ptr);
 				printf("-- ALLOC LEFT - %d\n", BUFFER_SIZE - check);
 				//ft_realloc(left, 0, ft_strlen(buff) - check + 1);
 				left = ptr;
 				ft_realloc(left, 0, ft_strlen(buff) - check);
-				left[ft_strlen(buff) - check -1] = '\0';
+				left[BUFFER_SIZE - check] = '\0';
 
 				printf("-- REALLOC LEFT OK - %s\n", left);
                 printf("-- STORE LEFT OK -\n");
@@ -182,6 +191,12 @@ int get_next_line(int fd, char **line)
 
                 return (1);
             } else {
+				if (ft_strlen(buff) + 1 != BUFFER_SIZE && has_eol(buff) == -1)
+				{
+					ft_realloc(*line, 0, ft_strlen(buff));
+                	ft_strlcpy(*line, buff, ft_strlen(buff));
+					return (1);
+				}
                 ft_realloc(*line, 0, ft_strlen(*line) + BUFFER_SIZE);
                 *line = ft_strjoin(*line, buff);
                 printf ("\033[0;36m-- CUR LINE: %s\033[0;35m[end]\033[0m\n", *line);
@@ -201,7 +216,7 @@ int main(void)
 
 	ptr = &line;
 	printf("\n\033[1;31m--------------- GNL START ------------------\033[0m\n");
-	while (i < 3)
+	while (i < 7)
 	{
 		printf("\n\033[1;34m--------------- GNL - %d ------------------\033[0m\n\n", i);
 		get_next_line(fd, ptr);
