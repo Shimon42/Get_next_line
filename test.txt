@@ -1,7 +1,7 @@
 - Bonjour, comment ca va ?
 - Salut, bien et toi?
 - Tranquille
-- Et ça marche du coup ?
+- Et ça marche ou pas du coup ?
 - Ça à l'air
 - Pas mal
 - Ouai

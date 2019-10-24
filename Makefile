@@ -2,18 +2,27 @@ NAME	= gnl
 SRCS	=	get_next_line.c \
 			get_next_line_utils.c
 
+SRCSG	=	get_next_line-ok-not-normed.c \
+			get_next_line_utils.c
+
 CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror -D BUFFER_SIZE=26
+CFLAGS	= -Wall -Wextra -Werror -D BUFFER_SIZE=27
 RM		= rm -f
 INCLUDES =	get_next_line.h
 
 all:		$(NAME)
 
 $(NAME): 	
+			clear
 			$(CC) $(CFLAGS) $(SRCS) $(INCLUDES)
 
 launch :	re
 			clear
+			./a.out
+
+launchg :	fclean
+			clear
+			$(CC) $(CFLAGS) $(SRCSG) $(INCLUDES)
 			./a.out
 
 clean:		
