@@ -6,7 +6,7 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/21 20:22:38 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/25 23:24:55 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/25 23:29:46 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -76,17 +76,17 @@ int get_next_line(int fd, char **line)
 
 	if (BUFFER_SIZE > 0)
 		if (init_brain(&b, line))
-		while (treat_left(&b) && b.check < 0)
-			{
-				if ((b.nbr_read = read(fd, b.buff, BUFFER_SIZE))
-					&& (b.check = has_eol(b.buff)) >= 0)
-					return (treat_read(&b));
-				if (b.nbr_read == 0)
-					return (ft_realloc(b.line, 0, ft_strlen(b.line)) * 0);
-				ft_realloc(b.line, 0, ft_strlen(b.line) + BUFFER_SIZE);
-				b.line = ft_strjoin(b.line, b.buff);
-				*line = b.line;
-			}
+			while (treat_left(&b) && b.check < 0)
+				{
+					if ((b.nbr_read = read(fd, b.buff, BUFFER_SIZE))
+						&& (b.check = has_eol(b.buff)) >= 0)
+						return (treat_read(&b));
+					if (b.nbr_read == 0)
+						return (ft_realloc(b.line, 0, ft_strlen(b.line)) * 0);
+					ft_realloc(b.line, 0, ft_strlen(b.line) + BUFFER_SIZE);
+					b.line = ft_strjoin(b.line, b.buff);
+					*line = b.line;
+				}
 	return (0);
 }
 
