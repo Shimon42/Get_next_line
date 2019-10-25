@@ -1,3 +1,7 @@
+
+      k
+
+
 - Bonjour, comment ca va ?
 - Salut, bien et toi?
 - Tranquille
@@ -5,3 +9,4 @@
 - Ça à l'air
 - Pas mal
 - Ouai
+

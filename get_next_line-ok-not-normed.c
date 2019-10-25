@@ -6,7 +6,7 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/21 20:22:38 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/25 23:07:50 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/25 23:20:54 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -85,6 +85,7 @@ int get_next_line(int fd, char **line)
 					return (ft_realloc(b.line, 0, ft_strlen(b.line)));
 				ft_realloc(b.line, 0, ft_strlen(b.line) + BUFFER_SIZE);
 				b.line = ft_strjoin(b.line, b.buff);
+				*line = b.line;
 			}
 	return (0);
 }
