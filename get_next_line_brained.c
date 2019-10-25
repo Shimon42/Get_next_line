@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                          LE - /            */
 /*                                                              /             */
-/*   get_next_line.c                                  .::    .:/ .      .::   */
+/*   get_next_line_brained.c                          .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/21 20:22:38 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/25 17:03:22 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/25 16:55:21 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -36,36 +36,6 @@ int	init_brain(t_gnl *brain, char **line)
 	return (1);
 }
 
-int	treat_left(t_gnl *brain)
-{
-	t_gnl b;
-	int check;
-
-	check = -1;
-	b = *brain;
-	if ((check = has_eol(b.left)) >= 0) // if line has \n 
-	{
-		printf("-- AS RETURN IN LEFT\n");
-		ft_realloc(b.line, 0, ft_strlen(b.left) - check);
-		ft_strlcpy(b.line, b.left, check); //line = left - check
-		b.left += check; // get start of next left
-		printf ("\033[0;36m-- CUR LINE: %s\033[0;35m[end]\033[0m\n", b.line);
-		printf("-- LEFT OK - %s\n", b.left);
-		printf("-- ALLOC LEFT - %d\n", BUFFER_SIZE - check);
-		
-		ft_realloc(b.left, 0, ft_strlen(b.left));
-		b.left[ft_strlen(b.left)] = '\0';
-		printf("\033[0;31mLEFT END: \033[0;33m%s\033[0;35m[end]\033[0m\n", b.left);
-		
-		return (1);
-	} else {
-				printf("-- NO RETURN IN LEFT\n");
-		ft_strlcpy(b.line, b.left, ft_strlen(b.left) + 1); // store left
-		b.left = "";
-		b.asleft = 0;
-	}
-	return (check);
-}
 
 int get_next_line(int fd, char **line)
 {
@@ -83,8 +53,30 @@ int get_next_line(int fd, char **line)
     {
 		printf("-- FIRST TEST OK\n");
 		if (b.asleft) // if left
-			if ((check = treat_left(&b)))
+        {
+			printf("-- AS LEFT\n");
+            if ((check = has_eol(b.left)) >= 0) // if line has \n 
+            {
+				printf("-- AS RETURN IN LEFT\n");
+                ft_realloc(b.line, 0, ft_strlen(b.left) - check);
+                ft_strlcpy(b.line, b.left, check); //line = left - check
+                b.left += check; // get start of next left
+				printf ("\033[0;36m-- CUR LINE: %s\033[0;35m[end]\033[0m\n", b.line);
+                printf("-- LEFT OK - %s\n", b.left);
+				printf("-- ALLOC LEFT - %d\n", BUFFER_SIZE - check);
+				
+				ft_realloc(b.left, 0, ft_strlen(b.left));
+				b.left[ft_strlen(b.left)] = '\0';
+                printf("\033[0;31mLEFT END: \033[0;33m%s\033[0;35m[end]\033[0m\n", b.left);
+                
 				return (1);
+            } else {
+						printf("-- NO RETURN IN LEFT\n");
+                ft_strlcpy(b.line, b.left, ft_strlen(b.left) + 1); // store left
+                b.left = "";
+                b.asleft = 0;
+            }
+        }
         while (check < 0) // Read file
         {
             printf("--READLOOP\n");
