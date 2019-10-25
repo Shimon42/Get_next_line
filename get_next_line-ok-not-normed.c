@@ -6,107 +6,88 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/21 20:22:38 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/25 14:56:32 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/25 23:07:50 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdio.h>
 #include "get_next_line.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+int	init_brain(t_gnl *brain, char **line)
+{
+	if (!(*brain).init)
+	{
+		(*brain).asleft = 0;
+		(*brain).init = 1;
+	}
+	(*brain).line = *line;
+	if (((*brain).buff = malloc(BUFFER_SIZE * sizeof(char))) == NULL)
+		return (-1);
+	(*brain).nbr_read = 0;
+	(*brain).line_len = 0;
+	(*brain).check = -1;
+	return (1);
+}
+
+int	treat_left(t_gnl *b)
+{
+	if ((*b).asleft)
+	{
+		if (((*b).check = has_eol((*b).left)) >= 0)
+		{
+			ft_realloc((*b).line, 0, ft_strlen((*b).left) - (*b).check);
+			ft_strlcpy((*b).line, (*b).left, (*b).check);
+			(*b).left += (*b).check;
+			ft_realloc((*b).left, 0, ft_strlen((*b).left));
+			(*b).left[ft_strlen((*b).left)] = '\0';
+		} else {
+			ft_strlcpy((*b).line, (*b).left, ft_strlen((*b).left) + 1);
+			(*b).left = "";
+			(*b).asleft = 0;
+		}
+	}
+	return (1);
+}
+
+int	treat_read(t_gnl *b)
+{
+	ft_realloc((*b).line,
+				0,
+				ft_strlen((*b).line) + ft_strlen((*b).buff) - (*b).check);
+	(*b).line += ft_strlen((*b).line);
+	ft_strlcpy((*b).line, (*b).buff, (*b).check);
+	*((*b).line + (*b).check - 1) = '\0';
+	(*b).left = (*b).buff + (*b).check;
+	ft_realloc((*b).left, 0, ft_strlen((*b).buff) - (*b).check);
+	(*b).left[BUFFER_SIZE - (*b).check] = '\0';
+	(*b).asleft = 1;
+	return (1);
+}
 
 int get_next_line(int fd, char **line)
 {
-	char		*buff;
-	int			check;
-	static char *left;
-	static int	asleft;
-    char    *ptr;
-	int		readcheck;
+	static	t_gnl b;
 
-	readcheck = 0;
-	if (!asleft)
-		left = NULL;
-	check = -1;
-	printf("\033[0;31mLEFT BEGIN: \033[0;33m%s\033[0;35m[end]\033[0m\n", left);
-	if (BUFFER_SIZE > 0 && (buff = malloc(BUFFER_SIZE * sizeof(char))) != NULL)
-    {
-        printf("-- Malloc OK\n");
-		if (asleft) // if left
-        {
-            printf("-- AS LEFT\n");
-            if ((check = has_eol(left)) >= 0) // if line has \n 
-            {
-				printf("-- AS RETURN IN LEFT\n");
-                ft_realloc(*line, 0, ft_strlen(left) - check);
-                ft_strlcpy(*line, left, check); //line = left - check
-                ptr = left + check; // get start of next left
-                printf ("\033[0;36m-- CUR LINE: %s\033[0;35m[end]\033[0m\n", *line);
-                printf("-- PTR LEFT OK - %s\n", ptr);
-				printf("-- ALLOC LEFT - %d\n", BUFFER_SIZE - check);
-				//ft_realloc(left, 0, ft_strlen(buff) - check + 1);
-				left = ptr;
-				ft_realloc(left, 0, ft_strlen(left));
-				left[ft_strlen(left)] = '\0';
-				printf("\033[0;31mLEFT END: \033[0;33m%s\033[0;35m[end]\033[0m\n", left);
-                return (1);
-            } else {
-				printf("-- NO RETURN IN LEFT\n");
-                ft_strlcpy(*line, left, ft_strlen(left) + 1); // store left
-                left = "";
-                asleft = 0;
-            }
-        }
-        while (check < 0) // Read file
-        {
-            
-            if ((readcheck = read(fd, buff, BUFFER_SIZE)) && (check = has_eol(buff)) >= 0) // if \n
-            {
-          	  printf("-- READ OK -> BUFF:%s\033[0;35m[end]\033[0m\n", buff);
-                printf("-- FOUND EOL -- %d\n", check);
-                ft_realloc(*line, 0, ft_strlen(*line) + ft_strlen(buff) - check); // alloc size of left + buff length - check 
-                printf("-- REALLOC OK\n");
-                ptr = *line + ft_strlen(*line); //get start
-                printf("-- PTR OK - %s\n", ptr);
-                printf("-- PTR AT - %lu\n", ft_strlen(buff) - check);
-                ft_strlcpy(ptr, buff, check); //line = left - check
-                printf("-- LINE ASSIGN OK\n");
-				*(ptr + check - 1) = '\0';
-                printf ("\033[0;36m-- CUR LINE: %s\033[0;35m[end]\033[0m\n", *line);
-                ptr = buff + check; //get start, pas de + 1 car le "plus 1" est le \n 
-                printf("-- PTR LEFT OK - %s\n", ptr);
-				printf("-- ALLOC LEFT - %d\n", BUFFER_SIZE - check);
-				//ft_realloc(left, 0, ft_strlen(buff) - check + 1);
-				left = ptr;
-				ft_realloc(left, 0, ft_strlen(buff) - check);
-				left[BUFFER_SIZE - check] = '\0';
-
-				printf("-- REALLOC LEFT OK - %s\n", left);
-                printf("-- STORE LEFT OK -\n");
-                asleft = 1;
-				printf("\033[0;31mLEFT END: \033[0;33m%s\033[0;35m[end]\033[0m\n", left);
-
-                return (1);
-            } else {
-				printf("CHECK NO EOF - %d\n", check);
-				printf("READCHECK NO EOF - %d\n", readcheck);
-				  printf("-- READ END OF FILE -> BUFF:%s\033[0;35m[end]\033[0m\n", buff);
-				if (readcheck == 0)
-				{
-					printf("FINAL RETURN\n");
-					ft_realloc(*line, 0, ft_strlen(*line) + ft_strlen(buff));
-                	//*line = ft_strjoin(*line, left);
-					//*line = ft_strjoin(*line, buff);
-					 printf ("\033[0;36m-- CUR LINEEND: %s\033[0;35m[end]\033[0m\n", *line);
-					return (1);
-				}
-                ft_realloc(*line, 0, ft_strlen(*line) + BUFFER_SIZE);
-                *line = ft_strjoin(*line, buff);
-                printf ("\033[0;36m-- CUR LINE: %s\033[0;35m[end]\033[0m\n", *line);
-            }
-        }
-    }
+	if (BUFFER_SIZE > 0)
+		if (init_brain(&b, line))
+		while (treat_left(&b) && b.check < 0)
+			{
+				if ((b.nbr_read = read(fd, b.buff, BUFFER_SIZE))
+					&& (b.check = has_eol(b.buff)) >= 0)
+					return (treat_read(&b));
+				if (b.nbr_read == 0)
+					return (ft_realloc(b.line, 0, ft_strlen(b.line)));
+				ft_realloc(b.line, 0, ft_strlen(b.line) + BUFFER_SIZE);
+				b.line = ft_strjoin(b.line, b.buff);
+			}
 	return (0);
 }
-
 
 int main(void)
 {
