@@ -6,7 +6,7 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/21 20:22:38 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/27 20:11:49 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/27 20:16:20 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -178,19 +178,19 @@ int main(void)
 	int res = 1;
 	ptr = &line;
 	//fd = 0;
-	int fd2 = open("test2.txt", O_CREAT | O_RDWR);
-	char *line2;
-	char **ptr2;
-	int res2 = 1;
-	ptr2 = &line2;
-	//res2 = 1;
-	fd2 = 1;
+	//int fd2 = open("test2.txt", O_CREAT | O_RDWR);
+	//char *line2;
+	//char **ptr2;
+	//int res2 = 1;
+	//ptr2 = &line2;
+	////res2 = 1;
+	//fd2 = 1;
 	printf("\n\033[1;33m--------------- GNL START ------------------\033[0m\n");
 	while (i < 6)
 	{
 		printf("\n\033[1;34m--------------- GNL - %d ------------------\033[0m\n\n", i);
 		res = get_next_line(fd, ptr);
-		res2 = get_next_line(fd2, ptr2);
+	//	res2 = get_next_line(fd2, ptr2);
 		printf("\n\033[0;32mfd: %d - RES  %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd, i, line, res);
 		//printf("\n\033[0;32mfd: %d - RES %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd2, i, line2, res2);
 			i++;
