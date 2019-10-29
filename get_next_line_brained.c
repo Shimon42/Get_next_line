@@ -6,7 +6,7 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/21 20:22:38 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/25 21:47:16 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/29 16:07:57 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -25,6 +25,7 @@ int	init_brain(t_gnl *brain, char **line)
 	{
 		printf(" - ok\n");
 		(*brain).asleft = 0;
+		(*brain).left = NULL;
 		(*brain).init = 1;
 	}
 	(*brain).line = *line;

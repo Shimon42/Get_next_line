@@ -6,7 +6,7 @@ SRCSG	=	get_next_line-ok-not-normed.c \
 			get_next_line_utils.c
 
 CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror -D BUFFER_SIZE=10000000
+CFLAGS	= -Wall -Wextra -Werror -D BUFFER_SIZE=10
 RM		= rm -f
 INCLUDES =	get_next_line.h
 

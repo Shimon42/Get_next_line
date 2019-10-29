@@ -6,7 +6,7 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/24 16:01:47 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/25 22:35:36 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/29 16:45:18 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -18,8 +18,9 @@ size_t	ft_strlen(const char *s)
 	int length;
 
 	length = 0;
-	while (s[length])
-		length++;
+	if (s != NULL)
+		while (s[length])
+			length++;
 	return (length);
 }
 

@@ -6,7 +6,7 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/21 20:22:38 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/28 23:48:59 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/29 17:51:40 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -19,7 +19,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-void disp_brain(t_gnl b)
+void disp_brain(t_gnl *b)
 {
 	printf("--- BRAIN FD %d ---\n\
 	line: %s\n\
@@ -29,7 +29,16 @@ void disp_brain(t_gnl b)
 	line_len: %d\n\
 	nbr_read: %d\n\
 	init: %d\n\
-	check: %d\n", b.fd, b.line, b.buff, b.left, b.asleft, b.line_len, b.nbr_read, b.init, b.check);
+	check: %d\n", (*b).fd, (*b).line, (*b).buff, (*b).left, (*b).asleft, (*b).line_len, (*b).nbr_read, (*b).init, (*b).check);
+}
+
+void	disp_list(t_gnl *lst)
+{
+	while (lst)
+	{
+		printf("\033[1;35m--- \tFD %d is in list\033[0m\n", lst->fd);
+		lst = lst->next;
+	}
 }
 
 t_gnl	*init_brain(int fd, char **line)
@@ -38,7 +47,10 @@ t_gnl	*init_brain(int fd, char **line)
 	printf("-- Init brain fd %d\n", fd);
 	if ((brain = malloc(sizeof(t_gnl))) != NULL)
 	{
+		if (brain->init == 1)
+			printf("ALREADY INIT\n");
 		brain->asleft = 0;
+		brain->left = NULL;
 		brain->init = 1;
 		brain->fd = fd;
 		brain->next = NULL;
@@ -56,29 +68,42 @@ t_gnl	*init_brain(int fd, char **line)
 
 int	treat_left(t_gnl *b)
 {
-	if ((*b).asleft)
+	if (b->asleft)
 	{
-		if (((*b).check = has_eol((*b).left)) >= 0)
+		if ((b->check = has_eol(b->left)) >= 0)
 		{
-			ft_realloc((*b).line, 0, ft_strlen((*b).left) - (*b).check);
-			ft_strlcpy((*b).line, (*b).left, (*b).check);
-			(*b).left += (*b).check;
-			ft_realloc((*b).left, 0, ft_strlen((*b).left));
-			(*b).left[ft_strlen((*b).left)] = '\0';
+			ft_realloc(b->line, 0, ft_strlen(b->left) - b->check);
+			ft_strlcpy(b->line, b->left, b->check);
+			b->left += b->check;
+			ft_realloc(b->left, 0, ft_strlen(b->left));
+			b->left[ft_strlen(b->left)] = '\0';
 		} else {
-			ft_strlcpy((*b).line, (*b).left, ft_strlen((*b).left) + 1);
-			(*b).left = "";
-			(*b).asleft = 0;
+			ft_strlcpy(b->line, b->left, ft_strlen(b->left) + 1);
+			b->left = "";
+			b->asleft = 0;
 		}
-	}
+	} else
+		printf("NO LEFT\n");
 	return (1);
 }
 
 int	treat_read(t_gnl *b)
 {
-	ft_realloc((*b).line,
-				0,
-				ft_strlen((*b).line) + ft_strlen((*b).buff) - (*b).check);
+	printf("START TREAT READ\n");
+	ft_strlen((*b).line);
+	ft_strlen((*b).buff);
+	if ((*b).line != NULL)
+		ft_realloc((*b).line,
+					0,
+					ft_strlen((*b).line) + ft_strlen((*b).buff) - (*b).check);
+	else
+	{
+		ft_realloc((*b).line,
+					0,
+					ft_strlen((*b).buff) - (*b).check);
+	}
+	
+	printf("REALLOC READ OK\n");
 	(*b).line += ft_strlen((*b).line);
 	ft_strlcpy((*b).line, (*b).buff, (*b).check);
 	*((*b).line + (*b).check - 1) = '\0';
@@ -96,20 +121,24 @@ t_gnl	*get_brain(t_gnl *b, int fd, char **line)
 
 	ptr = &b;
 
-	if((*ptr))
+	if((*ptr) != NULL)
 	{
-		while ((*ptr)->next)
+		while ((*ptr))
 		{
 			printf("-- \033[1;33mtmpid %d\033[0m\n", b->fd);
 			if((*ptr)->fd == fd)
 			{
-				printf("\033[1;33m-- Found !\033[1;33m\n");
+				printf("\033[1;33m-- Found !\033[0m\n");
 				return ((*ptr));
 			}
-			(*ptr) = (*ptr)->next;
+			if ((*ptr)->next == NULL)
+				break;
+			*ptr = (*ptr)->next;
 		}
+		printf("-- Not Found but list...\n");
 		(*ptr)->next = init_brain(fd, line);
-		return ((*ptr)->next);
+		*ptr = (*ptr)->next;
+		return ((*ptr));
 	}
 	printf("-- Not Found ...\n");
 	printf("-- FIRST IN LIST\n");
@@ -157,22 +186,33 @@ int get_next_line(int fd, char **line)
 	t_gnl **curb;
 
 	curb = &b;
-	ft_lstiter(b);
+	disp_list(b);
 	if (BUFFER_SIZE > 0)
-		if (get_brain(*curb, fd, line))
+		if ((*curb = get_brain(b, fd, line)))
 			{
-				//disp_brain(curb);
-				/*while (treat_left(curb) && (*curb).check < 0)
+				printf("\033[1;36m-- BRAIN %d WELL RETRIEVED\033[0m\n", (*curb)->fd);
+				disp_brain(*curb);
+				(*curb)->line  = *line;
+				while (treat_left(*curb) && (*curb)->check < 0)
 				{
-					if (((*curb).nbr_read = read(fd, (*curb).buff, BUFFER_SIZE))
-						&& ((*curb).check = has_eol((*curb).buff)) >= 0)
-						return (treat_read(&b));
-					if ((*curb).nbr_read == 0)
-						return (ft_realloc((*curb).line, 0, ft_strlen((*curb).line)));
-					ft_realloc((*curb).line, 0, ft_strlen((*curb).line) + BUFFER_SIZE);
-					(*curb).line = ft_strjoin((*curb).line, (*curb).buff);
-					*line = (*curb).line;
-				}*/
+					printf("-- TREAT LEFT OK\n");
+					if (((*curb)->nbr_read = read(fd, (*curb)->buff, BUFFER_SIZE))
+						&& ((*curb)->check = has_eol((*curb)->buff)) >= 0)
+					{
+						printf("-- RETURN IN LEFT\n");
+						*line = (*curb)->line;
+						return (treat_read(*curb));
+					}
+					printf("-- NO RETURN IN BUFF\n");
+					if ((*curb)->nbr_read == 0)
+						return (ft_realloc((*curb)->line, 0, ft_strlen((*curb)->line)));
+					printf("-- NO END OF FILE\n");
+					ft_realloc((*curb)->line, 0, ft_strlen((*curb)->line) + BUFFER_SIZE);
+					printf("-- REALLOC OK\n");
+					(*curb)->line = ft_strjoin((*curb)->line, (*curb)->buff);
+					*line = (*curb)->line;
+				}
+				return (1);
 			}
 	return (0);
 }
@@ -183,27 +223,25 @@ int main(void)
 {
 	int fd = open("test.txt", O_CREAT | O_RDWR);
 	char *line;
-	char **ptr;
 	int i = 0;
 	int res = 1;
-	ptr = &line;
 	//fd = 0;
 	int fd2 = open("test2.txt", O_CREAT | O_RDWR);
 	char *line2;
-	char **ptr2;
 	int res2 = 1;
-	ptr2 = &line2;
-	////res2 = 1;
+	//res2 = 1;
 	//fd2 = 1;
 	printf("\n\033[1;33m--------------- GNL START ------------------\033[0m\n");
-	while (i < 2)
+	while (res == 1)
 	{
-		printf("\n\033[1;34m--------------- GNL - %d ------------------\033[0m\n\n", i);
-		res = get_next_line(fd, ptr);
-		res2 = get_next_line(fd2, ptr2);
+		printf("\n\033[1;34m--------------- GNL - %d - FD %d ---------------\033[0m\n\n", i, fd);
+		res = get_next_line(fd, &line);
 		printf("\n\033[0;32mfd: %d - RES %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd, i, line, res);
+		
+		printf("\n\033[1;34m--------------- GNL - %d - FD %d ---------------\033[0m\n\n", i, fd2);
+		res2 = get_next_line(fd2, &line2);
 		printf("\n\033[0;32mfd: %d - RES %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd2, i, line2, res2);
-			i++;
+		i++;
 	}
 	printf("\n\033[1;32m--------------- GNL   END ------------------\033[0m\n");
 }
