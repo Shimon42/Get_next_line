@@ -12,8 +12,8 @@ void disp_brain(t_gnl *b)
 		line_len: %d\n\
 		nbr_read: %d\n\
 		init: %d\n\
-		check: %d\n\
-		nextFD:%d\n", b->fd, b->line, b->buff, b->left, b->asleft, b->line_len, b->nbr_read, b->init, b->check, (b->next ? b->next->fd : 0));
+		eol: %d\n\
+		nextFD:\033[0;33m%d\033[0m\n", b->fd, b->line, b->buff, b->left, b->asleft, b->line_len, b->nbr_read, b->init, b->eol, (b->next ? b->next->fd : 0));
 	}
 }
 

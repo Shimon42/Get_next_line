@@ -6,7 +6,7 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 14:39:54 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/30 18:07:05 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/30 21:59:21 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -35,49 +35,54 @@ t_gnl	*init_brain(int fd, char **line)
 			return (NULL);
 		brain->nbr_read = 0;
 		brain->line_len = 0;
-		brain->check = -1;
+		brain->eol = -1;
 		//disp_brain(*brain);
 		printf("\tNEW FD OK %d\n", fd);
 	}
 	return (brain);
 }
 
-t_gnl	*get_brain(t_gnl **ptr, int fd, char **line)
+t_gnl	*get_brain(t_gnl **b, int fd, char **line)
 {
+	t_gnl *tmp;
+	t_gnl **ptr;
+
+	ptr = b;
 	printf("Searching for FD %d\n", fd);
 	disp_brain(*ptr);
 	if (*ptr != NULL)
 	{
-		while ((*ptr)->next != NULL)
+		while ((*ptr) != NULL)
 		{
+			printf("- FD %d in list\n", (*ptr)->fd);
 			if ((*ptr)->fd == fd)
 				return (*ptr);
-			(*ptr) = (*ptr)->next;
+			ptr = &((*ptr)->next);
 		}
 		printf("\tNOT FOUND\n");
-		(*ptr)->next = init_brain(fd, line);
-		printf("\tAlloc ok\n");
 		//*ptr = (*ptr)->next;
-		return ((*ptr)->next->next);
+		tmp = init_brain(fd, line);
+		tmp->next = *b;
+		*b = tmp;
+		printf("\tAlloc ok\n");
+		return (tmp);
 	}
 	printf("First in list\n");
-	*ptr = init_brain(fd, line);
-	return (*ptr);
+	*b = init_brain(fd, line);
+	return (*b);
 }
 
 int get_next_line(int fd, char **line)
 {
 	static	t_gnl *b;
-	t_gnl **curb;
+	t_gnl *curb;
 
-	curb = &b;
 	disp_list(b);
 	if (BUFFER_SIZE > 0)
-		if ((get_brain(&b, fd, line)))
+		if ((curb = get_brain(&b, fd, line)))
 			{
-				printf("\033[1;36m-- BRAIN %d WELL RETRIEVED\033[0m\n", (*curb)->fd);
-				disp_brain(*curb);
-				(*curb)->line  = *line;
+				printf("\033[1;36m-- BRAIN %d WELL RETRIEVED\033[0m\n", curb->fd);
+				disp_brain(curb);
 			}
 	return (0);
 }
@@ -90,20 +95,18 @@ int main(void)
 	char *line;
 	int i = 0;
 	int res = 1;
-	line = malloc(30 * sizeof(char));
-	line = "Bonjour comment ca va";
 
 	int fd2 = open("test2.txt", O_RDONLY);
 	char *line2;
 	int res2 = 1;
-	line2 = malloc(30 * sizeof(char));
-	line2 = "Bien et toi ?";
 
 	int fd3 = open("test2.txt", O_RDONLY);
 	char *line3;
 	int res3 = 1;
-	line3 = malloc(30 * sizeof(char));
-	line3 = "CA VA CA VA";
+	
+	int fd4 = open("test2.txt", O_RDONLY);
+	char *line4;
+	int res4 = 1;
 	
 	printf("\n\033[1;33m--------------- GNL START ------------------\033[0m\n");
 	while (i < 2)
@@ -119,6 +122,11 @@ int main(void)
 		printf("\n\033[1;34m--------------- GNL - %d - FD %d ---------------\033[0m\n\n", i, fd3);
 		res3 = get_next_line(fd3, &line3);
 		printf("\n\033[0;32mfd: %d - RES %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd3, i, line3, res3);
+		
+		printf("\n\033[1;34m--------------- GNL - %d - FD %d ---------------\033[0m\n\n", i, fd4);
+		res4 = get_next_line(fd4, &line4);
+		printf("\n\033[0;32mfd: %d - RES %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd4, i, line4, res4);
+		
 		i++;
 	}
 	printf("\n\033[1;32m--------------- GNL   END ------------------\033[0m\n");
