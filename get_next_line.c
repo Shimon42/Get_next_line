@@ -6,7 +6,7 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 14:39:54 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/30 21:59:21 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/30 23:24:46 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -30,9 +30,10 @@ t_gnl	*init_brain(int fd, char **line)
 		brain->init = 1;
 		brain->fd = fd;
 		brain->next = NULL;
+		brain->left = ft_calloc(1,1);
 		brain->line = *line;
-		if ((brain->buff = malloc(BUFFER_SIZE * sizeof(char))) == NULL)
-			return (NULL);
+		brain->line = ft_calloc(1,1);
+		brain->buff = ft_calloc(BUFFER_SIZE, sizeof(char));
 		brain->nbr_read = 0;
 		brain->line_len = 0;
 		brain->eol = -1;
@@ -49,7 +50,6 @@ t_gnl	*get_brain(t_gnl **b, int fd, char **line)
 
 	ptr = b;
 	printf("Searching for FD %d\n", fd);
-	disp_brain(*ptr);
 	if (*ptr != NULL)
 	{
 		while ((*ptr) != NULL)
@@ -74,15 +74,45 @@ t_gnl	*get_brain(t_gnl **b, int fd, char **line)
 
 int get_next_line(int fd, char **line)
 {
-	static	t_gnl *b;
-	t_gnl *curb;
+	static	t_gnl *blist;
+	t_gnl *b;
 
-	disp_list(b);
+	disp_list(blist);
 	if (BUFFER_SIZE > 0)
-		if ((curb = get_brain(&b, fd, line)))
+		if ((b = get_brain(&blist, fd, line)))
 			{
-				printf("\033[1;36m-- BRAIN %d WELL RETRIEVED\033[0m\n", curb->fd);
-				disp_brain(curb);
+				b->line = ft_calloc(1,1);
+				printf("\033[1;36m--- BRAIN %d WELL RETRIEVED\033[0m\n", b->fd);
+				disp_brain(b);
+				printf("eol\n");
+				if(b->asleft)
+				{
+					printf("- Has left\n");
+					if((b->eol = has_eol(b->buff)) >= 0)
+					{
+						printf("- HAS EOL in left - %d\n", b->eol);
+						*line = ft_strnjoin(b->line, b->buff, 0, b->eol - 1);	
+						b->buff = ft_strnjoin("", b->buff, b->eol + 1, -1);
+						b->asleft = 1;
+						return (1);
+					}
+					b->line = ft_strnjoin(b->line, b->buff, 0, -1);			
+					b->asleft = 1;
+				}
+				while((b->nbr_read = read(b->fd, b->buff, BUFFER_SIZE)))
+				{
+					printf("- READED: %s[END]", b->buff);
+					if ((b->eol = has_eol(b->buff)) >= 0)
+					{
+						*line = ft_strnjoin(b->line, b->buff, 0, b->eol);
+						b->buff = ft_strnjoin("", b->buff, b->eol, -1);
+						b->asleft = 1;
+						return (1);
+					}
+					b->line = ft_strnjoin(b->line, b->buff,0 , -1);
+					b->asleft = 0;
+				}
+				printf("Check: %d\n", b->eol);
 			}
 	return (0);
 }
@@ -99,7 +129,7 @@ int main(void)
 	int fd2 = open("test2.txt", O_RDONLY);
 	char *line2;
 	int res2 = 1;
-
+/*
 	int fd3 = open("test2.txt", O_RDONLY);
 	char *line3;
 	int res3 = 1;
@@ -107,9 +137,9 @@ int main(void)
 	int fd4 = open("test2.txt", O_RDONLY);
 	char *line4;
 	int res4 = 1;
-	
+	*/
 	printf("\n\033[1;33m--------------- GNL START ------------------\033[0m\n");
-	while (i < 2)
+	while (i < 8)
 	{
 		printf("\n\033[1;34m--------------- GNL - %d - FD %d ---------------\033[0m\n\n", i, fd);
 		res = get_next_line(fd, &line);
@@ -119,14 +149,14 @@ int main(void)
 		res2 = get_next_line(fd2, &line2);
 		printf("\n\033[0;32mfd: %d - RES %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd2, i, line2, res2);
 		
-		printf("\n\033[1;34m--------------- GNL - %d - FD %d ---------------\033[0m\n\n", i, fd3);
+	/*	printf("\n\033[1;34m--------------- GNL - %d - FD %d ---------------\033[0m\n\n", i, fd3);
 		res3 = get_next_line(fd3, &line3);
 		printf("\n\033[0;32mfd: %d - RES %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd3, i, line3, res3);
 		
 		printf("\n\033[1;34m--------------- GNL - %d - FD %d ---------------\033[0m\n\n", i, fd4);
 		res4 = get_next_line(fd4, &line4);
 		printf("\n\033[0;32mfd: %d - RES %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd4, i, line4, res4);
-		
+		*/
 		i++;
 	}
 	printf("\n\033[1;32m--------------- GNL   END ------------------\033[0m\n");

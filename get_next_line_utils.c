@@ -6,14 +6,14 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 14:44:05 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/30 21:59:01 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/30 23:17:17 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char		*ft_strjoin(char const *s1, char const *s2)
+char		*ft_strnjoin(char const *s1, char const *s2, int start, int size)
 {
 	char		*join;
 	const char	*ps1;
@@ -22,13 +22,16 @@ char		*ft_strjoin(char const *s1, char const *s2)
 
 	ps1 = s1;
 	ps2 = s2;
+	if(size == -1)
+		size = ft_strlen(s2);
+	ps2 += start;
 	if ((join = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char)))
 		!= NULL)
 	{
 		pj = join;
 		while (*ps1 != '\0')
 			*pj++ = *ps1++;
-		while (*ps2 != '\0')
+		while (*ps2 != '\0' && size--)
 			*pj++ = *ps2++;
 		*pj = '\0';
 	}
@@ -46,6 +49,20 @@ int has_eol(char *s)
 	if (i < BUFFER_SIZE)
 		return (-2);
 	return (-1);
+}
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	void			*obj;
+	unsigned char	*pobj;
+
+	if ((obj = malloc(count * size)) != NULL)
+	{
+		pobj = obj;
+		while (count--)
+			*pobj++ = '\0';
+	}
+	return (obj);
 }
 
 size_t	ft_strlen(const char *s)

@@ -1,7 +1,7 @@
-- Bonjour, comment ca va ?
-- Salut, bien et toi?
-- Tranquille
-- Et ça marche ou pas du coup ?
-- Ça à l'air
-- Pas mal
-- Ouai
+- Hello, how are you?
+- Hi, good and you?
+- Quiet
+- And does it work or not?
+- It looks like
+- Not bad
+- Yeah
