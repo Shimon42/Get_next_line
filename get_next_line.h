@@ -6,7 +6,7 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/21 20:52:46 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/29 16:08:24 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/30 15:01:08 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -40,3 +40,5 @@ char			*ft_strdup(const char *s1);
 char			*ft_strjoin(char const *s1, char const *s2);
 size_t			ft_strlen(const char *s);
 size_t			ft_strlcpy(char *dst, const char *src, size_t size);
+void			ft_lstadd_front(t_gnl **alst, t_gnl *newlst);
+void	ft_lstadd_back(t_gnl **alst, t_gnl *newlst);

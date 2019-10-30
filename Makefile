@@ -1,9 +1,11 @@
 NAME	= gnl
-SRCS	=	get_next_line.c \
+SRCS	=	debug.c \
+			get_next_line.c \
 			get_next_line_utils.c
 
-SRCSG	=	get_next_line-ok-not-normed.c \
-			get_next_line_utils.c
+SRCSG	=	debug.c \
+			get_next_line-ok-not-normed.c \
+			get_next_line_utils_last.c
 
 CC		= gcc
 CFLAGS	= -Wall -Wextra -Werror -D BUFFER_SIZE=10
