@@ -8,7 +8,7 @@ SRCSG	=	debug.c \
 			get_next_line_utils_last.c
 
 CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror -D BUFFER_SIZE=1000
+CFLAGS	= -Wall -Wextra -Werror -D BUFFER_SIZE=1
 RM		= rm -f
 INCLUDES =	get_next_line.h
 
