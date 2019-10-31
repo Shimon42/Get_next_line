@@ -6,7 +6,7 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 14:39:54 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/30 23:24:46 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/31 17:09:14 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -84,7 +84,6 @@ int get_next_line(int fd, char **line)
 				b->line = ft_calloc(1,1);
 				printf("\033[1;36m--- BRAIN %d WELL RETRIEVED\033[0m\n", b->fd);
 				disp_brain(b);
-				printf("eol\n");
 				if(b->asleft)
 				{
 					printf("- Has left\n");
@@ -94,6 +93,7 @@ int get_next_line(int fd, char **line)
 						*line = ft_strnjoin(b->line, b->buff, 0, b->eol - 1);	
 						b->buff = ft_strnjoin("", b->buff, b->eol + 1, -1);
 						b->asleft = 1;
+						disp_brain(b);
 						return (1);
 					}
 					b->line = ft_strnjoin(b->line, b->buff, 0, -1);			
@@ -101,18 +101,28 @@ int get_next_line(int fd, char **line)
 				}
 				while((b->nbr_read = read(b->fd, b->buff, BUFFER_SIZE)))
 				{
-					printf("- READED: %s[END]", b->buff);
+					b->buff[b->nbr_read] = '\0';
+					printf("- READED: %s[END]\n", b->buff);
 					if ((b->eol = has_eol(b->buff)) >= 0)
 					{
-						*line = ft_strnjoin(b->line, b->buff, 0, b->eol);
+						*line = ft_strnjoin(b->line, b->buff, 0, b->eol - 1);
 						b->buff = ft_strnjoin("", b->buff, b->eol, -1);
 						b->asleft = 1;
+						disp_brain(b);
 						return (1);
 					}
 					b->line = ft_strnjoin(b->line, b->buff,0 , -1);
 					b->asleft = 0;
 				}
+				if (b->nbr_read == 0)
+				{
+					*line = b->line;
+					return (0);
+				}
+				b->asleft = 1;
 				printf("Check: %d\n", b->eol);
+				disp_brain(b);
+				return (0);
 			}
 	return (0);
 }
@@ -139,7 +149,7 @@ int main(void)
 	int res4 = 1;
 	*/
 	printf("\n\033[1;33m--------------- GNL START ------------------\033[0m\n");
-	while (i < 8)
+	while (res || res2)
 	{
 		printf("\n\033[1;34m--------------- GNL - %d - FD %d ---------------\033[0m\n\n", i, fd);
 		res = get_next_line(fd, &line);
