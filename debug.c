@@ -7,13 +7,10 @@ void disp_brain(t_gnl *b)
 		printf("--- BRAIN FD %d ---\n\
 		line: %s\n\
 		buff: %s\n\
-		left: %s\n\
 		asleft: %d\n\
-		line_len: %d\n\
 		nbr_read: %d\n\
-		init: %d\n\
 		eol: %d\n\
-		nextFD:\033[0;33m%d\033[0m\n", b->fd, b->line, b->buff, b->left, b->asleft, b->line_len, b->nbr_read, b->init, b->eol, (b->next ? b->next->fd : 0));
+		nextFD:\033[0;33m%d\033[0m\n", b->fd, b->line, b->buff, b->asleft, b->nbr_read, b->eol, (b->next ? b->next->fd : 0));
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 14:44:05 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/31 15:31:35 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/31 19:33:54 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -25,7 +25,7 @@ char		*ft_strnjoin(char const *s1, char const *s2, int start, int size)
 	if(size == -1)
 		size = ft_strlen(s2);
 	ps2 += start;
-	if ((join = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char)))
+	if ((join = ft_calloc((ft_strlen(s1) + ft_strlen(s2) + 1), sizeof(char)))
 		!= NULL)
 	{
 		pj = join;
