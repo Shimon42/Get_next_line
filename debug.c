@@ -4,13 +4,13 @@ void disp_brain(t_gnl *b)
 {
 	if (b)
 	{
-		printf("--- BRAIN FD %d ---\n\
-		line: %s\n\
-		buff: %s\n\
-		asleft: %d\n\
-		nbr_read: %d\n\
-		eol: %d\n\
-		nextFD:\033[0;33m%d\033[0m\n", b->fd, b->line, b->buff, b->asleft, b->nbr_read, b->eol, (b->next ? b->next->fd : 0));
+		printf("-- BRAIN FD %d --\n\
+	line:\033[0;35m[start]\033[0m%s\033[0;35m[end]\033[0m\n\
+	buff:\033[0;35m[start]\033[0m%s\033[0;35m[end]\033[0m\n\
+	asleft: %d\n\
+	nbr_read: %d\n\
+	eol: %d\n\
+	nextFD:\033[0;33m%d\033[0m\n", b->fd, b->line, b->buff, b->asleft, b->nbr_read, b->eol, (b->next ? b->next->fd : 0));
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 14:44:05 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/31 19:33:54 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/01 13:48:48 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -44,8 +44,11 @@ int has_eol(char *s)
 
 	i = 0;
 	while (s[i])
-		if(s[i++] == '\n')
+	{
+		if(s[i] == '\n')
 			return (i);
+		i++;
+	}
 	if (i < BUFFER_SIZE)
 		return (-2);
 	return (-1);
