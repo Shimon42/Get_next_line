@@ -6,7 +6,7 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 14:39:54 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/31 23:06:41 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/01 13:07:18 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -65,18 +65,8 @@ t_gnl	*get_brain(t_gnl **b, int fd, char **line)
 
 void	realloc_line(t_gnl *b, char **line)
 {
-	printf("---- EOL REALLOC %d\n", b->eol);
-	if (b->eol == 0)
-	{
-
-		*line = ft_strnjoin(b->line, b->buff, 0, b->eol + 1);	
-		b->buff = ft_strnjoin("", b->buff, b->eol + 1, -1);
-	}
-	else
-	{
-		*line = ft_strnjoin(b->line, b->buff, 0, b->eol);	
-		b->buff = ft_strnjoin("", b->buff, b->eol + 1, -1);
-	}
+	*line = ft_strnjoin(b->line, b->buff, 0, b->eol - 1);	
+	b->buff = ft_strnjoin("", b->buff, b->eol + 1, -1);
 	b->asleft = 1;
 }
 
@@ -126,7 +116,7 @@ int		get_next_line(int fd, char **line)
 					{
 						printf("- HAS EOL in left - %d\n", b->eol);
 						realloc_line(b, line);
-						disp_brain(b);
+					//	disp_brain(b);
 						return (1);
 					}
 					b->line = ft_strnjoin(b->line, b->buff, 0, -1);			
