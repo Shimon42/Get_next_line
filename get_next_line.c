@@ -6,7 +6,7 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 14:39:54 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/01 15:33:34 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/01 21:45:10 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -91,12 +91,20 @@ void	meditate(t_gnl **blist, t_gnl *b)
 int		treat_left(t_gnl *b, char **line)
 {
 	printf("-> Has left\n");
-	disp_brain(b);
 	if((b->eol = has_eol(b->buff)) >= 0)
 	{
 		printf("-> HAS EOL in left - %d\n", b->eol);
-		*line = ft_strnjoin(b->line, b->buff, 0, b->eol);	
-		b->buff = ft_strnjoin("", b->buff, b->eol + 1, -1);
+		if (b->eol == 0)
+		{
+			printf("->LINE JUMP\n");
+			*line = ft_strnjoin("\n", "", 0, -1);
+			b->buff = ft_strnjoin("", b->buff, b->eol + 1, -1);
+			disp_brain(b);
+			return (1);
+		}
+		b->line = ft_strnjoin(b->line, b->buff, 0, b->eol);	
+		*line = b->line;
+		b->buff = ft_strnjoin("", b->buff, b->eol + 1, ft_strlen(b->buff) - b->eol);
 		printf("-> HAS BUFF - \033[0;35m[start]\033[0m%s\033[0;35m[end]\033[0m\n", b->buff);
 		b->asleft = 1;
 		disp_brain(b);
@@ -143,34 +151,36 @@ int		get_next_line(int fd, char **line)
 	return (-1);
 }
 
-
-
 int main(void)
 {
 	int fd = open("tests/test", O_RDONLY);
-	char *line;
+	char *line ;
+	line = NULL;
 	int i = 0;
 	int res = 1;
 
 	int fd2 = open("tests/test2", O_RDONLY);
 	char *line2;
+	line2 = NULL;
 	int res2 = 1;
-/*
+
 	int fd3 = open("tests/test3", O_RDONLY);
 	char *line3;
+	line3 = NULL;
 	int res3 = 1;
 
 	int fd4 = open("tests/test4", O_RDONLY);
 	char *line4;
-	int res4 = 1;*/
+	line4 = NULL;
+	int res4 = 1;
 	printf("\n\033[1;33m--------------- GNL START ------------------\033[0m\n");
-	while (res > 0)
+	while (i < 5)
 	{
 		if (res > 0)
 		{
-			printf("\n\033[1;34m--------------- GNL - %d - FD %d ---------------\033[0m\n\n", i, fd);
+			printf("\n\033[1;34m--------------- GNL - %d - FD %d ---------------\033[0m\n", i, fd);
 			res = get_next_line(fd, &line);
-			printf("\n\033[0;32mfd: %d - RES %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd, i, line, res);
+			printf("\033[0;32mfd: %d - RES %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd, i, line, res);
 		}
 		
 		if (res2 > 0)
@@ -180,19 +190,19 @@ int main(void)
 			printf("\n\033[0;32mfd: %d - RES %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd2, i, line2, res2);
 		}
 
-	/*	if(res3 > 0)
+		if(res3 > 0)
 		{
 			printf("\n\033[1;34m--------------- GNL - %d - FD %d ---------------\033[0m\n\n", i, fd3);
-			res3 = get_next_line(fd3, &line3);
+			//res3 = get_next_line(fd3, &line3);
 			printf("\n\033[0;32mfd: %d - RES %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd3, i, line3, res3);
 		}
 		
 		if(res4 > 0)
 		{
 			printf("\n\033[1;34m--------------- GNL - %d - FD %d ---------------\033[0m\n\n", i, fd4);
-			res4 = get_next_line(fd4, &line4);
+			//res4 = get_next_line(fd4, &line4);
 			printf("\n\033[0;32mfd: %d - RES %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd4, i, line4, res4);
-		}*/
+		}
 		i++;
 	}
 	printf("\n\033[1;32m--------------- GNL   END ------------------\033[0m\n");
