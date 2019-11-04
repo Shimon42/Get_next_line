@@ -6,7 +6,7 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/21 20:52:46 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/04 17:44:01 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/04 21:22:04 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -41,4 +41,7 @@ char				*ft_strnjoin(char const *s1,
 					int size);
 size_t				ft_strlen(const char *s);
 void				*ft_calloc(size_t count, size_t size);
+
+void	disp_list(t_gnl *lst);
+void disp_brain(t_gnl *b, char *title);
 #endif
