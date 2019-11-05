@@ -37,7 +37,7 @@ int main(void)
 	int res = 1;
 	char *exp1;
 
-	int fd2 = open("tests/test2", O_RDONLY);
+	/*int fd2 = open("tests/test2", O_RDONLY);
 	int fd2check = open("tests/test2", O_RDONLY);
 	char *line2;
 	line2 = NULL;
@@ -61,7 +61,7 @@ int main(void)
 	int fd5 = 0;
 	char *line5;
 	line5 = NULL;
-	int res5 = 1;
+	int res5 = 1;*/
 
 
 	printf("\n\033[1;33m--------------- GNL START ----------- BUFF: %d-------\033[0m\n", BUFFER_SIZE);
@@ -69,7 +69,7 @@ int main(void)
 	{
 		printf("\n\033[1;34m--------------- GNL CALL - %d -------- BUFF: %d --------\033[0m\n", i, BUFFER_SIZE);
 		
-		if (res > 0 || res2 > 0 || res3 > 0 || res4 > 0 || res5 >0)
+		if (res > 0)
 		{
 			exp1 = readline(fdcheck);
 			res = get_next_line(fd, &line);
@@ -80,6 +80,7 @@ int main(void)
 				return (0);
 			}
 		}
+		/*
 		if (res2 > 0)
 		{
 			exp2 = readline(fd2check);
@@ -120,7 +121,7 @@ int main(void)
 		{
 			res5 = get_next_line(fd5, &line5);
 			printf("\033[0;32mfd: %d - RES %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd5, i, line5, res5);
-		}
+		}*/
 		i++;
 	}
 	printf("\n\033[1;32m--------------- GNL   END ------------------\033[0m\n");
