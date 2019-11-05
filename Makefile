@@ -8,7 +8,7 @@ SRCSG	=	debug.c\
 			get_next_line_utils_last.c
 
 CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror -D BUFFER_SIZE=100
+CFLAGS	= -Wall -Wextra -Werror -g3 -fsanitize=address -D BUFFER_SIZE=65
 RM		= rm -f
 INCLUDES =	get_next_line.h
 

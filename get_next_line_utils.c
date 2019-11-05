@@ -6,7 +6,7 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 14:44:05 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/04 22:33:14 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/05 18:40:51 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -16,20 +16,26 @@
 char	*ft_strnjoin(char const *s1, char const *s2, int start, int size)
 {
 	char		*join;
-	int			i;
-	int			j;
+	size_t		i;
+	size_t		j;
+	size_t		s1len;
+	size_t		s2len;
 
+	s1len = ft_strlen(s1);
+	s2len = ft_strlen(s2);
 	i = 0;
 	j = 0;
 	if (size < 0)
-		size = ft_strlen(s2) - start;
-	if ((join = ft_calloc((ft_strlen(s1) + size + 1), sizeof(char)))
+		size = s2len - start - 1;
+	if ((join = malloc((s1len + size + 1) * sizeof(char)))
 		!= NULL)
 	{
-		while (s1[j] != '\0')
+		while (j < s1len)
+		{
 			join[i++] = s1[j++];
+		}
 		j = start;
-		while (s2[j] != '\0' && size--)
+		while (j < s2len && size--)
 			join[i++] = s2[j++];
 		join[i] = '\0';
 	}
