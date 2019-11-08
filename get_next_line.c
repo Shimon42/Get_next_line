@@ -6,7 +6,7 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 14:39:54 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/06 13:37:54 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/05 22:45:29 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -22,8 +22,8 @@ t_gnl	*init_brain(int fd, char **line)
 		brain->fd = fd;
 		brain->asleft = 0;
 		brain->next = NULL;
-		*line = malloc(1 * sizeof(char));
-		brain->buff = NULL;
+		*line = ft_calloc(1, sizeof(char));
+		brain->buff = ft_calloc(1, sizeof(char));
 		brain->eol = -1;
 		brain->nbr_read = 0;
 	}
@@ -84,23 +84,22 @@ int		treat_left(t_gnl *b, char **line)
 {
 	char *buff_temp;
 	char *line_temp;
+	buff_temp = b->buff;
+	line_temp = *line;
 	if ((b->eol = has_eol(b->buff)) >= 0)
 	{
-		line_temp = ft_strnjoin(*line, b->buff, 0, b->eol);
-		buff_temp = ft_strnjoin("",
+		*line = ft_strnjoin(*line, b->buff, 0, b->eol);
+		b->buff = ft_strnjoin("",
 								b->buff,
 								b->eol + 1,
 								ft_strlen(b->buff) - b->eol);
-		free(b->buff);
-		free(*line);
-		line = &line_temp;
-		b->buff = buff_temp;
+		free(buff_temp);
+		free(line_temp);
 		b->asleft = 1;
 		return (1);
 	}
-	line_temp = ft_strnjoin(*line, b->buff, 0, BUFFER_SIZE);
-	free(*line);
-	*line = line_temp;
+	*line = ft_strnjoin(*line, b->buff, 0, BUFFER_SIZE);
+	free(line_temp);
 	b->asleft = 1;
 	return (0);
 }
@@ -115,7 +114,6 @@ int		get_next_line(int fd, char **line)
 		{
 			if (b->asleft && treat_left(b, line))
 				return (1);
-			free(b->buff);
 			if ((b->buff = malloc((BUFFER_SIZE + 1) * sizeof(char))) != NULL)
 			{
 				while ((b->nbr_read = read(b->fd, b->buff, BUFFER_SIZE)))

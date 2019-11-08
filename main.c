@@ -29,13 +29,13 @@ int		ft_strcomp(char *s1, char *s2)
 int main(void)
 {
 	//char *testfile = "tests/test";
-	int fd = open("tests/normal.txt", O_RDONLY);
-	//ßint fdcheck = open("tests/normal.txt", O_RDONLY);
+	int fd = open("tests/bar.txt", O_RDONLY);
+	int fdcheck = open("tests/bar.txt", O_RDONLY);
 	char *line ;
 	line = NULL;
 	int i = 0;
 	int res = 1;
-	//char *exp1;
+	char *exp1;
 
 	/*int fd2 = open("tests/test2", O_RDONLY);
 	int fd2check = open("tests/test2", O_RDONLY);
@@ -64,23 +64,70 @@ int main(void)
 	int res5 = 1;*/
 
 
-//	printf("\n\033[1;33m--------------- GNL START ----------- BUFF: %d-------\033[0m\n", BUFFER_SIZE);
+	printf("\n\033[1;33m--------------- GNL START ----------- BUFF: %d-------\033[0m\n", BUFFER_SIZE);
 	while (res > 0)
 	{
-		//printf("\n\033[1;34m--------------- GNL CALL - %d -------- BUFF: %d --------\033[0m\n", i, BUFFER_SIZE);
+		printf("\n\033[1;34m--------------- GNL CALL - %d -------- BUFF: %d --------\033[0m\n", i, BUFFER_SIZE);
 		
 		if (res > 0)
 		{
-			//exp1 = readline(fdcheck);
+			exp1 = readline(fdcheck);
 			res = get_next_line(fd, &line);
-			//printf("\033[0;32mfd: %d - RES %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd, i, line, res);
-			/*if (exp1 && line && ft_strcomp(exp1, line) != 0)
+			printf("\033[0;32mfd: %d - RES %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd, i, line, res);
+			if (exp1 && line && ft_strcomp(exp1, line) != 0)
 			{
 				printf("DIFF\n");
 				return (0);
-			}*/
+			}
 		}
+		/*
+		if (res2 > 0)
+		{
+			exp2 = readline(fd2check);
+			res2 = get_next_line(fd2, &line2);
+			printf("\033[0;32mfd: %d - RES %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd2, i, line2, res2);
+			if (exp2 && line2 && ft_strcomp(exp2, line2) != 0)
+			{
+				printf("DIFF\n");
+				return (0);
+			}
+		}
+
+		if(res3 > 0)
+		{
+			exp3 = readline(fd3check);
+			res3 = get_next_line(fd3, &line3);
+			printf("\033[0;32mfd: %d - RES %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd3, i, line3, res3);
+			if (exp3 && line3 && ft_strcomp(exp3, line3) != 0)
+			{
+				printf("DIFF\n");
+				return (0);
+			}
+		}
+		
+		if(res4 > 0)
+		{
+			exp4 = readline(fd4check);
+			res4 = get_next_line(fd4, &line4);
+			printf("\033[0;32mfd: %d - RES %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd4, i, line4, res4);
+			if (exp4 && line4 && ft_strcomp(exp4, line4) != 0)
+			{
+				printf("DIFF\n");
+				return (0);
+			}
+		}
+
+		if(res5 > 0)
+		{
+			res5 = get_next_line(fd5, &line5);
+			printf("\033[0;32mfd: %d - RES %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd5, i, line5, res5);
+		}*/
 		i++;
 	}
+	printf("\n\033[1;32m--------------- GNL   END ------------------\033[0m\n");
+	printf("\n\033[1;32m--------------- GNL   END ------------------\033[0m\n");
+	printf("\n\033[1;32m--------------- GNL   END ------------------\033[0m\n");
+	printf("\n\033[1;32m--------------- GNL   END ------------------\033[0m\n");
+	printf("\n\033[1;32m--------------- GNL   END ------------------\033[0m\n");
 }
 
