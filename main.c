@@ -1,15 +1,14 @@
 #include "get_next_line.h"
+#include "debug.h"
 
 char* readline(fd)
 {
-	char *tmp = malloc(1000000 * sizeof(char));
+	char *tmp = malloc(10000 * sizeof(char));
 	char *tmpCur;
 
 	tmpCur = tmp;
 	while (read(fd, tmpCur, 1) && *tmpCur != '\n')
-	{
 		tmpCur++;
-	}
 	*tmpCur = '\0';
 	return (tmp);
 }
@@ -30,12 +29,13 @@ int main(void)
 {
 	//char *testfile = "tests/test";
 	int fd = open("tests/bar.txt", O_RDONLY);
-	int fdcheck = open("tests/bar.txt", O_RDONLY);
+	//int fdcheck = open("tests/bar.txt", O_RDONLY);
 	char *line ;
 	line = NULL;
 	int i = 0;
 	int res = 1;
-	char *exp1;
+	
+	//char *exp1;
 
 	/*int fd2 = open("tests/test2", O_RDONLY);
 	int fd2check = open("tests/test2", O_RDONLY);
@@ -64,21 +64,23 @@ int main(void)
 	int res5 = 1;*/
 
 
-	printf("\n\033[1;33m--------------- GNL START ----------- BUFF: %d-------\033[0m\n", BUFFER_SIZE);
+	//printf("\n\033[1;33m--------------- GNL START ----------- BUFF: %d-------\033[0m\n", BUFFER_SIZE);
 	while (res > 0)
 	{
-		printf("\n\033[1;34m--------------- GNL CALL - %d -------- BUFF: %d --------\033[0m\n", i, BUFFER_SIZE);
+		//printf("\n\033[1;34m--------------- GNL CALL - %d -------- BUFF: %d --------\033[0m\n", i, BUFFER_SIZE);
 		
 		if (res > 0)
 		{
-			exp1 = readline(fdcheck);
+			//exp1 = readline(fdcheck);
 			res = get_next_line(fd, &line);
 			printf("\033[0;32mfd: %d - RES %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd, i, line, res);
-			if (exp1 && line && ft_strcomp(exp1, line) != 0)
+			/*if (exp1 && line && ft_strcomp(exp1, line) != 0)
 			{
-				printf("DIFF\n");
+				printf("\033[0;32mDIFF\n");
 				return (0);
-			}
+			}*/
+			//free(exp1);
+			free(line);
 		}
 		/*
 		if (res2 > 0)
@@ -124,10 +126,11 @@ int main(void)
 		}*/
 		i++;
 	}
-	printf("\n\033[1;32m--------------- GNL   END ------------------\033[0m\n");
-	printf("\n\033[1;32m--------------- GNL   END ------------------\033[0m\n");
-	printf("\n\033[1;32m--------------- GNL   END ------------------\033[0m\n");
-	printf("\n\033[1;32m--------------- GNL   END ------------------\033[0m\n");
-	printf("\n\033[1;32m--------------- GNL   END ------------------\033[0m\n");
+	close(fd);
+//	printf("\n\033[1;32m--------------- GNL   END ------------------\033[0m\n");
+//	printf("\n\033[1;32m--------------- GNL   END ------------------\033[0m\n");
+//	printf("\n\033[1;32m--------------- GNL   END ------------------\033[0m\n");
+//	printf("\n\033[1;32m--------------- GNL   END ------------------\033[0m\n");
+//	printf("\n\033[1;32m--------------- GNL   END ------------------\033[0m\n");
 }
 
