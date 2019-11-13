@@ -73,7 +73,7 @@ int main(void)
 		{
 			//exp1 = readline(fdcheck);
 			res = get_next_line(fd, &line);
-			printf("\033[0;32mfd: %d - RES %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd, i, line, res);
+			//printf("\033[0;32mfd: %d - RES %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd, i, line, res);
 			/*if (exp1 && line && ft_strcomp(exp1, line) != 0)
 			{
 				printf("\033[0;32mDIFF\n");

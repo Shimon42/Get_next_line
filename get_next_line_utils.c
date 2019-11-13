@@ -6,12 +6,13 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 14:44:05 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/12 23:20:16 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/13 18:13:00 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include "debug.h"
 
 char	*ft_strnjoin(char const *s1, char const *s2, int start, int size)
 {
@@ -23,6 +24,7 @@ char	*ft_strnjoin(char const *s1, char const *s2, int start, int size)
 
 	s1len = ft_strlen(s1);
 	s2len = ft_strlen(s2);
+	printf(PINK"START s1}"RST"%s"PINK"{END"RST"\n"PINK"START s2}"RST"%s"PINK"{END"RST"\n", s1, s2);
 	i = 0;
 	j = 0;
 	if (size < 0)
@@ -35,7 +37,8 @@ char	*ft_strnjoin(char const *s1, char const *s2, int start, int size)
 		while (j < s2len && size--)
 			join[i++] = s2[j++];
 		join[i] = '\0';
-	}
+	} else
+		free(join);
 	return (join);
 }
 

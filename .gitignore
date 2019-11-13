@@ -3,3 +3,5 @@ a.out
 gnl.out
 get_next_line.h.gch
 .DS_Store
+debug.h.gch
+a.out.dSYM/Contents/Info.plist
