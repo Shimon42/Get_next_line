@@ -7,6 +7,7 @@
 #define BLUE 	"\033[0;34m"
 #define PINK	"\033[0;35m"
 #define CYAN	"\033[0;36m"
+#define GREY	"\033[0;37m"
 
 #define BRED	"\033[1;31m"
 #define BGRN	"\033[1;32m"
@@ -14,6 +15,7 @@
 #define BBLUE 	"\033[1;34m"
 #define BPINK	"\033[1;35m"
 #define BCYAN	"\033[1;36m"
+#define BGREY	"\033[1;37m"
 
 #define UWHT	"\033[4;1m"
 #define URED	"\033[4;31m"
@@ -22,6 +24,7 @@
 #define UBLUE	"\033[4;34m"
 #define UPINK	"\033[4;35m"
 #define UCYAN	"\033[4;36m"
+#define UGREY	"\033[4;37m"
 
 #define BGWHT	"\033[7;1m"
 #define BGRED	"\033[7;31m"
@@ -30,6 +33,7 @@
 #define BGBLUE	"\033[7;34m"
 #define BGPINK	"\033[7;35m"
 #define BGCYAN	"\033[7;36m"
+#define BGGREY	"\033[7;37m"
 
 // --------------- EDIT
 

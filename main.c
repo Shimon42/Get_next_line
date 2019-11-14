@@ -29,13 +29,13 @@ int main(void)
 {
 	//char *testfile = "tests/test";
 	int fd = open("tests/bar.txt", O_RDONLY);
-	//int fdcheck = open("tests/bar.txt", O_RDONLY);
+	int fdcheck = open("tests/bar.txt", O_RDONLY);
 	char *line ;
 	line = NULL;
 	int i = 0;
 	int res = 1;
 	
-	//char *exp1;
+	char *exp1;
 
 	/*int fd2 = open("tests/test2", O_RDONLY);
 	int fd2check = open("tests/test2", O_RDONLY);
@@ -71,15 +71,17 @@ int main(void)
 		
 		if (res > 0)
 		{
-			//exp1 = readline(fdcheck);
+			exp1 = readline(fdcheck);
 			res = get_next_line(fd, &line);
 			printf("\033[0;32mfd: %d - RES %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd, i, line, res);
-			/*if (exp1 && line && ft_strcomp(exp1, line) != 0)
+			if (exp1 && line && ft_strcomp(exp1, line) != 0)
 			{
 				printf("\033[0;32mDIFF\n");
+				free(exp1);
+				free(line);
 				return (0);
-			}*/
-			//free(exp1);
+			}
+			free(exp1);
 			free(line);
 		}
 		/*
