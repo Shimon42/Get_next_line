@@ -65,7 +65,7 @@ int main(void)
 
 
 	//printf("\n\033[1;33m--------------- GNL START ----------- BUFF: %d-------\033[0m\n", BUFFER_SIZE);
-	while (res > 0)
+	while (i < 5)
 	{
 		//printf("\n\033[1;34m--------------- GNL CALL - %d -------- BUFF: %d --------\033[0m\n", i, BUFFER_SIZE);
 		
@@ -73,12 +73,12 @@ int main(void)
 		{
 			exp1 = readline(fdcheck);
 			res = get_next_line(fd, &line);
-			printf("\033[0;32mfd: %d - RES %d -> %s\033[0;35m[end]\033[0m - RETURN %d\n", fd, i, line, res);
+			printf(GRN"fd: %d - RES %d -> %s"PINK"[end]"RST" - "YELO"RETURN %d\n", fd, i, line, res);
 			if (exp1 && line && ft_strcomp(exp1, line) != 0)
 			{
-				printf("\033[0;32mDIFF\n");
-				free(exp1);
-				free(line);
+				//printf(URED"DIFF\nEXP:%s"BGPINK"{END}"RST"\n\nRET:%s"PINK"{END}"RST"\n", exp1, line);
+			//	free(exp1);
+		//s		free(line);
 				return (0);
 			}
 			free(exp1);
