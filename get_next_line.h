@@ -6,7 +6,7 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/21 20:52:46 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/15 16:45:09 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/12/02 16:01:33 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -15,9 +15,6 @@
 # define GET_NEXT_LINE_H
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdio.h>
-# include <sys/types.h>
-# include <sys/stat.h>
 # include <fcntl.h>
 
 typedef struct		s_gnl
@@ -27,20 +24,15 @@ typedef struct		s_gnl
 	int				asleft;
 	int				nbr_read;
 	int				eol;
-	char			fdtester[1];
-	char			*line;
 	char			*buff;
 }					t_gnl;
 
 int					get_next_line(int fd, char **line);
-int					ft_realloc(char *buff, int buff_length, int overright);
 int					has_eol(char *s);
-char				*ft_strdup(const char *s1);
 char				*ft_strnjoin(char const *s1,
 					char const *s2,
 					int start,
 					int size);
 size_t				ft_strlen(const char *s);
 void				*ft_calloc(size_t count, size_t size);
-void				*ft_memset(void *b, int c, size_t len);
 #endif

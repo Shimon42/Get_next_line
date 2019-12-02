@@ -6,13 +6,12 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 14:39:54 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/15 17:51:24 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/12/02 14:53:35 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include "debug.h"
 
 t_gnl	*init_brain(int fd)
 {
@@ -117,7 +116,7 @@ int		get_next_line(int fd, char **line)
 
 	*line = NULL;
 	if (BUFFER_SIZE > 0 && fd >= 0)
-		if ((b = get_brain(&blist, fd, line)))
+		if ((b = get_brain(&blist, fd, line)) != NULL)
 		{
 			if (b->asleft && treat_left(b, line))
 				return (1);

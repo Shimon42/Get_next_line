@@ -6,13 +6,12 @@
 /*   By: siferrar <siferrar@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/30 14:44:05 by siferrar     #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/15 17:26:38 by siferrar    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/12/02 15:11:39 by siferrar    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include "debug.h"
 
 char	*ft_strnjoin(char const *s1, char const *s2, int start, int size)
 {
@@ -78,17 +77,4 @@ size_t	ft_strlen(const char *s)
 		while (s[length])
 			length++;
 	return (length);
-}
-
-void	*ft_memset(void *b, int c, size_t len)
-{
-	size_t i;
-
-	if (b)
-	{
-		i = 0;
-		while (i < len && ((char*)b)[i])
-			((char*)b)[i++] = (char)c;
-	}
-	return (b);
 }
